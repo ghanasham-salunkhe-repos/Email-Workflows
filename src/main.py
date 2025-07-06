@@ -11,12 +11,12 @@ def send_email():
       'Messages': [
         {
           "From": {
-            "Email": "ghanshamsalunkhe0@gmail.com",
-            "Name": "ghanshamsalunkhe0@gmail.com"
+            "Email": "salunkhegr1712@outlook.com",
+            "Name": "salunkhegr1712@outlook.com"
           },
           "To": [{"Email": email} for email in receiver_emails],
           "Subject": "Daily Email",
-          "TextPart": "This is your daily email."
+          "TextPart": "Hi, it's Ghanasham! How are you?"
         }
       ]
     }
