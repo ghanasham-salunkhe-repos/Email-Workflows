@@ -11,7 +11,7 @@ def send_email():
       'Messages': [
         {
           "From": {
-            "Email": "your_verified_email@domain.com",
+            "Email": "ghanshamsalunkhe0@gmail.com",
             "Name": "GitHub Mailer"
           },
           "To": [{"Email": email} for email in receiver_emails],
