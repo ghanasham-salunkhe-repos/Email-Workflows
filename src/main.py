@@ -12,7 +12,7 @@ def send_email():
         {
           "From": {
             "Email": "ghanshamsalunkhe0@gmail.com",
-            "Name": "GitHub Mailer"
+            "Name": "ghanshamsalunkhe0@gmail.com"
           },
           "To": [{"Email": email} for email in receiver_emails],
           "Subject": "Daily Email",
