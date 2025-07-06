@@ -1,41 +1,28 @@
 def send_email():
-    import smtplib
     import os
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
-    from cryptography.fernet import Fernet
+    from mailjet_rest import Client
 
-    # Load the encrypted password from environment variable
-    encrypted_password = os.environ.get('GMAIL_PASSWORD')
+    api_key = os.environ.get('MAILJET_API_KEY')
+    api_secret = os.environ.get('MAILJET_API_SECRET')
+    receiver_emails = [email.strip() for email in os.environ.get('RECEIVER_EMAILS', '').split(',') if email.strip()]
 
-    # Decrypt the password
-    key = b'your_fernet_key_here'  # Replace with your actual Fernet key
-    fernet = Fernet(key)
-    decrypted_password = fernet.decrypt(encrypted_password.encode()).decode()
-
-    # Email configuration
-    sender_email = "your_email@gmail.com"  # Replace with your email
-    receiver_emails = os.environ.get('RECEIVER_EMAILS', '')
-    receiver_list = [email.strip() for email in receiver_emails.split(',') if email.strip()]
-    subject = "Daily Email"
-    body = "This is your daily email."
-
-    # Create the email
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = ', '.join(receiver_list)
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-
-    # Send the email
-    try:
-        with smtplib.SMTP('smtp.gmail.com', 587) as server:
-            server.starttls()
-            server.login(sender_email, decrypted_password)
-            server.sendmail(sender_email, receiver_list, msg.as_string())
-            print("Email sent successfully!")
-    except Exception as e:
-        print(f"Error: {e}")
+    mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+    data = {
+      'Messages': [
+        {
+          "From": {
+            "Email": "your_verified_email@domain.com",
+            "Name": "GitHub Mailer"
+          },
+          "To": [{"Email": email} for email in receiver_emails],
+          "Subject": "Daily Email",
+          "TextPart": "This is your daily email."
+        }
+      ]
+    }
+    result = mailjet.send.create(data=data)
+    print(result.status_code)
+    print(result.json())
 
 if __name__ == "__main__":
     send_email()
